@@ -21,12 +21,12 @@ class Player
 end
 
 get '/' do
-  @players = Player.all.to_json
+  @players = Player.all
   erb :index
 end
 
 get '/random' do
-  Player.all.sample.to_json
+  Player.all.sample
 end
 
 post '/connect' do
