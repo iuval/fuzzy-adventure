@@ -22,11 +22,8 @@ class Player
 end
 
 get '/' do
-  haml :index
-end
-
-get '/list' do
-  Player.all.to_json
+  @players = Player.all.to_json
+  erb :index
 end
 
 get '/random' do
@@ -34,23 +31,23 @@ get '/random' do
 end
 
 post '/connect' do
-  return "Don't be leaving empty params..." if params["ip"].empty? || params["email"].empty?
+  return { message: "Don't be leaving empty params..." } if params["ip"].empty? || params["email"].empty?
 
   if Player.create(ip: params["ip"], email: params["email"])
-    "success"
+    { message: "success" }
   else
-    "error"
+    { message: "error" }
   end
 end
 
 post '/disconnect' do
-  return "Don't be leaving empty params..." if params["ip"].empty? || params["email"].empty?
+  return { message: "Don't be leaving empty params..." } if params["ip"].empty? || params["email"].empty?
 
   player = Player.finde(ip: params["ip"], email: params["email"])
 
   if player.delete
-    "success"
+    { message: "success" }
   else
-    "error"
+    { message: "error" }
   end
 end
