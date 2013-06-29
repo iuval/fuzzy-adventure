@@ -1,6 +1,5 @@
 require 'rubygems'
 require 'sinatra'
-require 'haml'
 require 'mongoid'
 require 'nokogiri'
 
@@ -16,11 +15,10 @@ configure do
   end
 end
 
-class Saying
+class Player
   include Mongoid::Document
-  field :wut
-  field :who
-  field :wen, type: Time, default: Time.now
+  field :ip
+  field :email
 end
 
 get '/' do
@@ -28,22 +26,31 @@ get '/' do
 end
 
 get '/list' do
-  Saying.all.to_s
+  Player.all.to_json
 end
 
-get '/roulette' do
-  haml :roulette, locals: { saying: Saying.all.sample }
+get '/random' do
+  Player.all.sample.to_json
 end
 
-post '/spread-the-word' do
-  return "Don't be leaving empty params..." if params["wut"].empty? || params["who"].empty?
+post '/connect' do
+  return "Don't be leaving empty params..." if params["ip"].empty? || params["email"].empty?
 
-  html_tags = Nokogiri::HTML::DocumentFragment.parse(params["wut"] + params["who"]).search('*')
-  return "You wouldn't be trying to submit some code into this pure loving baby, would you...." if html_tags.any?
-
-  if Saying.create(wut: params["wut"], who: params["who"])
-    redirect back
+  if Player.create(ip: params["ip"], email: params["email"])
+    "success"
   else
-    "Does this unformatted text make you feel miserable enough to understand that this is an error?"
+    "error"
+  end
+end
+
+post '/disconnect' do
+  return "Don't be leaving empty params..." if params["ip"].empty? || params["email"].empty?
+
+  player = Player.finde(ip: params["ip"], email: params["email"])
+
+  if player.delete
+    "success"
+  else
+    "error"
   end
 end

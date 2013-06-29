@@ -1,0 +1,28 @@
+#main-wrapper { 
+  height: 100%; 
+  width: 100%; 
+  display: -webkit-box; 
+  -webkit-box-pack: center; 
+  -webkit-box-orient: horizontal; 
+  -webkit-box-align: center; 
+  display: -moz-box;
+  -moz-box-pack: center; 
+  -moz-box-orient: horizontal;
+  -moz-box-align: center; 
+  display: box; 
+  box-pack: center;
+  box-orient: horizontal;
+  box-align: center; 
+}
+
+#main-wrapper.black {
+  background: black; 
+  color: white; 
+}
+
+#content { 
+  padding: 0 150px; 
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+}
