@@ -1,7 +1,6 @@
 require 'rubygems'
 require 'sinatra'
 require 'mongoid'
-require 'nokogiri'
 
 ENV['RACK_ENV'] ||= 'development'
 
