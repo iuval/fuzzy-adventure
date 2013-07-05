@@ -30,7 +30,6 @@ get '/random' do
 end
 
 post '/connect' do
-  require 'debugger';debugger
   return { message: "Don't be leaving empty params..." } if params["ip"].nil? || params["email"].nil?
 
   if Player.create(ip: params["ip"], email: params["email"])
