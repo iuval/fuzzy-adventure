@@ -30,7 +30,8 @@ get '/random' do
 end
 
 post '/connect' do
-  return { message: "Don't be leaving empty params..." } if params["ip"].empty? || params["email"].empty?
+  require 'debugger';debugger
+  return { message: "Don't be leaving empty params..." } if params["ip"].nil? || params["email"].nil?
 
   if Player.create(ip: params["ip"], email: params["email"])
     { message: "success" }
@@ -42,7 +43,7 @@ end
 post '/disconnect' do
   return { message: "Don't be leaving empty params..." } if params["ip"].empty? || params["email"].empty?
 
-  player = Player.finde(ip: params["ip"], email: params["email"])
+  player = Player.where(ip: params["ip"], email: params["email"])
 
   if player.delete
     { message: "success" }
