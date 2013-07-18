@@ -16,8 +16,13 @@ end
 
 class Player
   include Mongoid::Document
+  field :id
   field :ip
   field :email
+  field :name
+
+  validates :email, uniqueness: true
+  index({ id: 1 }, { unique: true, name: "id_index" })
 end
 
 get '/' do
@@ -29,13 +34,27 @@ get '/random' do
   Player.all.sample
 end
 
-post '/connect' do
-  return { message: "Don't be leaving empty params..." } if params["ip"].nil? || params["email"].nil?
+post '/sign_in' do
+  return error("Don't be leaving empty params...") if params["ip"].nil? || params["email"].nil?
 
-  if Player.create(ip: params["ip"], email: params["email"])
-    { message: "success" }
-  else
-    { message: "error" }
+  begin
+    player = Player.create!(ip: params["ip"], email: params["email"], name: params["user"])
+    
+    success(id: player.id)
+  rescue Mongoid::Errors::MongoidError => e
+    error(e.message)
+  end
+end
+
+post '/log_in' do
+  return error("Don't be leaving empty params...") if params["ip"].nil? || params["email"].nil?
+
+  begin
+    Player.create!(ip: params["ip"], email: params["email"], name: params["user"])
+    
+    success(data)
+  rescue Mongoid::Errors::MongoidError => e
+    error(e.message)
   end
 end
 
@@ -50,3 +69,13 @@ post '/disconnect' do
     { message: "error" }
   end
 end
+
+#helper
+def error(msg)
+  { value: "error", data: { message: msg } }
+end
+
+def success(data)
+  { value: "ok", data: data }
+end
+
