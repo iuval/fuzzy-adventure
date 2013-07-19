@@ -69,6 +69,10 @@ get '/delete_all_games' do
   Game.delete_all
 end 
 
+get '/delete_all_players' do
+  Player.delete_all
+end 
+
 post '/sign_in' do
   return error( "Don't be leaving empty params..." ) if params["ip"].nil? || params["email"].nil?
 
