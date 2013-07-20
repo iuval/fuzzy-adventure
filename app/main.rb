@@ -78,11 +78,14 @@ post '/sign_in' do
 end
 
 get '/log_in' do
-  return error("Don't be leaving empty params...") if params["ip"].nil? || params["email"].nil?
+  return error("Don't be leaving empty params...") if params["email"].nil?
 
   begin
     player = Player.where(email: params["email"])
     
+    player.ip = request.remote_ip
+    player.save
+
     success(id: player.id)
   rescue Mongoid::Errors::MongoidError => e
     error(e.message)
