@@ -1,15 +1,56 @@
 <div class="main-wrapper">
   <div class="content">
-	<% if @players.length > 0 %>
-		<% @players.each do |player| %>
-			<div class="elem">
-				<label>IP:</label><span><%= player.ip %></span>
-				<label>EMAIL:</label><span><%= player.email %></span>
-			</div>
-		<% end %>
-	<% else %>
-		<p>No players</p>
-	<% end %>
-	<div class="c"></div>
+    <div class="games">
+      <h1>Games</h1>
+      <% if @games.length > 0 %>
+        <table>
+          <thead>
+            <tr>
+              <th>Player</th>
+              <th>Player</th>
+              <th>Turn</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @games.each do |game| %>
+              <tr>
+                <td><%= game.players[0].email %></td>
+                <td><%= game.players[1].email %></td>
+                <td><%= game.turn %></td>
+              </tr> 
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <p>No games</p>
+      <% end %>
+    </div>
+
+    <div class="plaers">
+      <h1>Players</h1>
+      <% if @players.length > 0 %>
+        <table>
+          <thead>
+            <tr>
+              <th>id</th>
+              <th>ip</th>
+              <th>email</th>
+              <th>random enable</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @players.each do |player| %>
+              <tr>
+                <td><%= player.id %></td>
+                <td><%= player.ip %></td>
+                <td><%= player.email %></td>
+                <td><%= player.random_enable ? 'YES' : 'no' %></td>
+              </tr>
+            <% end %>
+          </tbody>
+      <% else %>
+        <p>No players</p>
+      <% end %>
+    </div>
   </div>
 <div>
