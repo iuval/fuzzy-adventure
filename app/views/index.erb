@@ -33,7 +33,6 @@
           <thead>
             <tr>
               <th>id</th>
-              <th>ip</th>
               <th>email</th>
               <th>random enable</th>
             </tr>
@@ -42,7 +41,6 @@
             <% @players.each do |player| %>
               <tr>
                 <td><%= player.id %></td>
-                <td><%= player.ip %></td>
                 <td><%= player.email %></td>
                 <td><%= player.random_enable ? 'YES' : 'no' %></td>
               </tr>

@@ -14,11 +14,8 @@ configure do
   end
 end
 
-#  index({ id: 1 }, { unique: true, name: "id_index" })
-
 class Player
   include Mongoid::Document
-  field :ip, type: String
   field :email, type: String
   field :name, type: String
   field :random_enable, type: Boolean
@@ -80,7 +77,7 @@ post '/sign_in' do
     if Player.where( email: params["email"] ).count > 0
       error("email already in use")
     else  
-      player = Player.create!( ip: request.remote_ip, email: params["email"], name: params["user"] )
+      player = Player.create!( email: params["email"], name: params["user"] )
       
       success(id: player._id)
     end
@@ -95,9 +92,6 @@ post '/log_in' do
   begin
     player = find_player(params)
     if player
-      player.ip = request.remote_ip
-      player.save
-      
       success(id: player.id)
     end
   rescue Mongoid::Errors::MongoidError => e
