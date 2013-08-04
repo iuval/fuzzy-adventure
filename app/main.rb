@@ -179,7 +179,11 @@ get '/game_turn/p/:player_id/g/:game_id' do
     game = player.games.find( params["game_id"] )
     if game
       turn = game.moves.where( :player.ne => player,turn: game.turn-1 ).first
-      success(turn.data)
+      if turn
+        success(turn.data)
+      else
+        success('none')
+      end
     else
       error "invalid player id"
     end
