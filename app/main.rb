@@ -31,7 +31,8 @@ end
 class Game
   include Mongoid::Document
   field :id
-  field :turn, type: Integer
+  field :turn, type: Integer, default: 0
+  field :move_count_current_turn, type: Integer, default: 0
 
   has_and_belongs_to_many :players
 
@@ -46,6 +47,7 @@ class Move
   embedded_in :game
   belongs_to :player
   field :turn
+  field :data
 
   index({ id: 1 }, { unique: true, name: "id_index" })
 end
@@ -146,7 +148,7 @@ post '/disable_random' do
   end
 end
 
-post '/list_games' do
+get '/list_games/p/:id' do
   return error( "Don't be leaving empty params..." ) if params["id"].nil?
 
   begin
@@ -155,7 +157,7 @@ post '/list_games' do
       games = []
       player.games.each do |game|
         name = game.players[0] == player ? game.players[1].email : game.players[0].email
-        state = game.moves.exists( player: player, turn: game.turn ) ? 'wait' : 'play'
+        state = game.moves.where( player: player, turn: game.turn ).count == 0 ? 'play' : 'wait'
 
         games << { game_id: game.id, name: name, turn: game.turn, state: state }
       end
@@ -168,6 +170,55 @@ post '/list_games' do
   end
 end
 
+get '/game_turn/p/:player_id/g/:game_id' do
+  return error( "Don't be leaving empty params..." ) if params["player_id"].nil? or  
+                                                        params["game_id"].nil?
+
+  player = Player.find( params["player_id"] )
+  if player 
+    game = player.games.find( params["game_id"] )
+    if game
+      turn = game.moves.where( :player.ne => player,turn: game.turn-1 ).first
+      success(turn.data)
+    else
+      error "invalid player id"
+    end
+  else
+    error "invalid player id"
+  end
+end
+
+post '/game_turn' do
+  return error( "Don't be leaving empty params..." ) if params["player_id"].nil? or  
+                                                        params["game_id"].nil? or 
+                                                        params["data"].nil?
+  begin
+    player = Player.find( params["player_id"] )
+    if player 
+      game = player.games.find( params["game_id"] )
+      if game
+        move = game.moves.create!
+        move.player = player
+        move.turn = game.turn
+        move.data = params['data']
+        move.save
+
+        if game.moves.where( turn: game.turn ).count == 2
+          game.turn += 1
+          game.save
+        end
+
+        success('')
+      else
+        error "invalid player id"
+      end
+    else
+      error "invalid player id"
+    end
+  rescue Mongoid::Errors::MongoidError => e
+    error e.message
+  end
+end
 
 #helper
 def error(msg)
