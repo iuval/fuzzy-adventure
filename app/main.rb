@@ -171,8 +171,7 @@ get '/list_games/p/:id' do
 end
 
 get '/game_turn/p/:player_id/g/:game_id' do
-  return error( "Don't be leaving empty params..." ) if params["player_id"].nil? or  
-  params["game_id"].nil?
+  return error( "Don't be leaving empty params..." ) if params["player_id"].nil? or  params["game_id"].nil?
 
   player = Player.find( params["player_id"] )
   if player 
@@ -180,11 +179,12 @@ get '/game_turn/p/:player_id/g/:game_id' do
     if game
       turn = game.moves.where( :player.ne => player,turn: game.turn-1 ).first
       if turn
-        success(turn.data)
+        data = turn.data
       else
-        player_num = game.players[0] == player ? 1 : 2
-        success({ player: player_num, data: 'none' })
+        data = 'none'
       end
+      player_num = game.players[0] == player ? 1 : 2
+      success({ game_id: game.id,player: player_num, data: turn.data })
     else
       error "invalid player id"
     end
