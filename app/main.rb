@@ -172,7 +172,7 @@ end
 
 get '/game_turn/p/:player_id/g/:game_id' do
   return error( "Don't be leaving empty params..." ) if params["player_id"].nil? or  
-                                                        params["game_id"].nil?
+  params["game_id"].nil?
 
   player = Player.find( params["player_id"] )
   if player 
@@ -183,7 +183,7 @@ get '/game_turn/p/:player_id/g/:game_id' do
         success(turn.data)
       else
         player_num = game.players[0] == player ? 1 : 2
-        success({ player: player_num, 'none' })
+        success({ player: player_num, data: 'none' })
       end
     else
       error "invalid player id"
@@ -195,8 +195,8 @@ end
 
 post '/game_turn' do
   return error( "Don't be leaving empty params..." ) if params["player_id"].nil? or  
-                                                        params["game_id"].nil? or 
-                                                        params["data"].nil?
+  params["game_id"].nil? or 
+  params["data"].nil?
   begin
     player = Player.find( params["player_id"] )
     if player 
