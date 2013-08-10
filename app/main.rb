@@ -184,7 +184,7 @@ get '/game_turn/p/:player_id/g/:game_id' do
         data = 'none'
       end
       player_num = game.players[0] == player ? 1 : 2
-      success({ game_id: game.id,player: player_num, data: turn.data })
+      success({ game_id: game.id,player: player_num, data: data })
     else
       error "invalid player id"
     end
