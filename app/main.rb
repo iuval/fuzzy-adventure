@@ -177,14 +177,21 @@ get '/game_turn/p/:player_id/g/:game_id' do
   if player 
     game = player.games.find( params["game_id"] )
     if game
-      turn = game.moves.where( :player.ne => player,turn: game.turn-1 ).first
-      if turn
-        data = turn.data
+      if game.players[0] == player
+        turn1 = game.moves.where( player: player, turn: game.turn-1 ).first
+        turn2 = game.moves.where( :player.ne => player, turn: game.turn-1 ).first
+        player_num = 1
       else
-        data = 'none'
+        turn1 = game.moves.where( :player.ne => player, turn: game.turn-1 ).first
+        turn2 = game.moves.where( player: player, turn: game.turn-1 ).first
+        player_num = 2
       end
-      player_num = game.players[0] == player ? 1 : 2
-      success({ game_id: game.id,player: player_num, data: data })
+      if turn1 && turn2
+        data = { game_id: game.id, player: player_num, data1: turn1.data, data2: turn2.data }
+      else
+        data = { game_id: game.id, player: player_num, data: 'none' }
+      end
+      success(data)
     else
       error "invalid player id"
     end
