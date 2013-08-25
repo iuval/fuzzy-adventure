@@ -70,9 +70,9 @@ get '/' do
   erb :index
 end
 
-get '/moves/:game_id' do
-  @moves = Game.find( params["game_id"] ).moves
-  erb :moves
+get '/games/:game_id' do
+  @game = Game.find( params["game_id"] )
+  erb :game
 end
 
 get '/delete_all_games' do
