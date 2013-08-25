@@ -37,6 +37,7 @@
               <th>id</th>
               <th>email</th>
               <th>random enable</th>
+              <th>Vic/Def/Dra</th>
             </tr>
           </thead>
           <tbody>
@@ -45,6 +46,7 @@
                 <td><%= player.id %></td>
                 <td><%= player.email %></td>
                 <td><%= player.random_enable ? 'YES' : 'no' %></td>
+                <td><%= "#{player.victory_total}/#{player.defeat_total}/#{player.draw_total}"  %></td>
               </tr>
             <% end %>
           </tbody>
