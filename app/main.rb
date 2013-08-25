@@ -256,9 +256,8 @@ post '/game_turn' do
           else
             game.turn += 1
           end
-
-          game.save
         end
+        game.save
 
         success('')
       else
