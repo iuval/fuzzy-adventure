@@ -236,11 +236,11 @@ post '/game_turn' do
         move.save
 
         unless params["result"].nil?
-          if params["game_id"] == 'victory'
+          if params["result"] == 'victory'
             player.victory_total += 1
-          elsif params["game_id"] == 'defeat'
+          elsif params["result"] == 'defeat'
             player.defeat_total += 1
-          elsif params["game_id"] == 'draw'
+          elsif params["result"] == 'draw'
             player.draw_total += 1
           end
           if game.players[0] == player
