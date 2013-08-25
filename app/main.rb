@@ -19,6 +19,9 @@ class Player
   field :email, type: String
   field :name, type: String
   field :random_enable, type: Boolean
+  field :victory_total, type: Integer
+  field :defeat_total, type: Integer
+  field :draw_total, type: Integer
 
   has_and_belongs_to_many :games
   has_one :invites, class_name: 'Invite', inverse_of: :host
@@ -31,8 +34,11 @@ end
 class Game
   include Mongoid::Document
   field :id
-  field :turn, type: Integer, default: 0
+  field :turn, type: Integer, default: 1
   field :move_count_current_turn, type: Integer, default: 0
+  field :ended, type: Boolean, default: false 
+  field :player_1_ended_game, type: Boolean, default: false 
+  field :player_2_ended_game, type: Boolean, default: false 
 
   has_and_belongs_to_many :players
 
@@ -215,8 +221,28 @@ post '/game_turn' do
         move.data = params['data']
         move.save
 
+        unless params["result"].nil?
+          if params["game_id"] == 'victory'
+            player.victory_total += 1
+          elsif params["game_id"] == 'defeat'
+            player.defeat_total += 1
+          elsif params["game_id"] == 'draw'
+            player.draw_total += 1
+          end
+          if game.players[0] == player
+            game.player_1_ended_game = true;
+          else
+            game.player_2_ended_game = true;
+          end
+        end
+
         if game.moves.where( turn: game.turn ).count == 2
-          game.turn += 1
+          if game.player_1_ended_game && game.player_2_ended_game
+            game.ended = true
+          else
+            game.turn += 1
+          end
+
           game.save
         end
 
