@@ -18,10 +18,10 @@ class Player
   include Mongoid::Document
   field :email, type: String
   field :name, type: String
-  field :random_enable, type: Boolean
-  field :victory_total, type: Integer
-  field :defeat_total, type: Integer
-  field :draw_total, type: Integer
+  field :random_enable, type: Boolean, default: false
+  field :victory_total, type: Integer, default: 0
+  field :defeat_total, type: Integer, default: 0
+  field :draw_total, type: Integer, default: 0
 
   has_and_belongs_to_many :games
   has_one :invites, class_name: 'Invite', inverse_of: :host
