@@ -238,10 +238,13 @@ post '/game_turn' do
         unless params["result"].nil?
           if params["result"] == 'victory'
             player.victory_total += 1
+            player.save
           elsif params["result"] == 'defeat'
             player.defeat_total += 1
+            player.save
           elsif params["result"] == 'draw'
             player.draw_total += 1
+            player.save
           end
           if game.players[0] == player
             game.player_1_ended_game = true;
