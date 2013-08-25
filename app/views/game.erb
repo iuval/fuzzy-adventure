@@ -26,7 +26,7 @@
             </tr>
           </thead>
           <tbody>
-            <% @moves.each do |move| %>
+            <% @game.moves.each do |move| %>
               <tr>
                 <td><%= move.turn %></td>
                 <td><%= move.player.email %></td>
