@@ -162,10 +162,19 @@ get '/list_games/p/:id' do
     if player
       games = []
       player.games.each do |game|
-        name = game.players[0] == player ? game.players[1].email : game.players[0].email
-        state = game.moves.where( player: player, turn: game.turn ).count == 0 ? 'play' : 'wait'
-
-        games << { game_id: game.id, name: name, turn: game.turn, state: state }
+        unless game.ended
+          if game.players[0] == player && !game.player_1_ended_game
+            name = game.players[1].email
+            victories = game.players[1].victory_total
+            state = game.moves.where( player: player, turn: game.turn ).count == 0 ? 'play' : 'wait'
+            games << { game_id: game.id, name: name, victories: victories, turn: game.turn, state: state }
+          elsif !game.player_2_ended_game
+            name = game.players[0].email
+            victories = game.players[0].victory_total
+            state = game.moves.where( player: player, turn: game.turn ).count == 0 ? 'play' : 'wait'
+            games << { game_id: game.id, name: name, victories: victories,turn: game.turn, state: state }
+          end
+        end
       end
       success(games)
     else
