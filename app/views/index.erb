@@ -15,7 +15,7 @@
           <tbody>
             <% @games.each do |game| %>
               <tr>
-                <td><%= game.id %></td>
+                <td><a href="/moves/<%= game.id %>"><%= game.id %></a></td>
                 <td><%= game.players[0].email %></td>
                 <td><%= game.players[1].email %></td>
                 <td><%= game.turn %></td>
