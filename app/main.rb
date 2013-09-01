@@ -85,23 +85,23 @@ get '/delete_all_players' do
 end 
 
 post '/sign_in' do
-  return error( "Don't be leaving empty params..." ) if params["email"].nil? || params["password"].nil?
+  return respond_error( "Don't be leaving empty params..." ) if params["email"].nil? || params["password"].nil?
 
   begin
     if Player.where( email: params["email"] ).count > 0
-      error "email already in use"
+      respond_error "email already in use"
     else  
       player = Player.create!( email: params["email"], password: params["password"] )
       
       success(id: player._id)
     end
   rescue Mongoid::Errors::MongoidError => e
-    error e.message
+    respond_error e.message
   end
 end
 
 post '/log_in' do
-  return error( "Don't be leaving empty params..." ) if params["email"].nil? || params["password"].nil?
+  return respond_error( "Don't be leaving empty params..." ) if params["email"].nil? || params["password"].nil?
 
   begin
     players = Player.where(email: params["email"], password: params["password"])
@@ -109,15 +109,15 @@ post '/log_in' do
       player = players.first
       success(id: player.id)
     else
-      error "invalid email or password"
+      respond_error "invalid email or password"
     end
   rescue Mongoid::Errors::MongoidError => e
-    error e.message
+    respond_error e.message
   end
 end
 
 post '/enable_random' do
-  return error( "Don't be leaving empty params..." ) if params["id"].nil?
+  return respond_error( "Don't be leaving empty params..." ) if params["id"].nil?
 
   begin
     player = Player.find(params["id"])
@@ -139,15 +139,15 @@ post '/enable_random' do
 
       success ""
     else
-      error 'invalid id'
+      respond_error 'invalid id'
     end
   rescue Mongoid::Errors::MongoidError => e
-    error e.message
+    respond_error e.message
   end
 end
 
 post '/disable_random' do
-  return error( "Don't be leaving empty params..." ) if params["id"].nil?
+  return respond_error( "Don't be leaving empty params..." ) if params["id"].nil?
 
   begin
     player = Player.find( params["id"] )
@@ -155,16 +155,16 @@ post '/disable_random' do
       player.random_enable = false
       player.save
     else
-      error "invalid id"
+      respond_error "invalid id"
     end
     success ""
   rescue Mongoid::Errors::MongoidError => e
-    error e.message
+    respond_error e.message
   end
 end
 
 get '/list_games/p/:id' do
-  return error( "Don't be leaving empty params..." ) if params["id"].nil?
+  return respond_error( "Don't be leaving empty params..." ) if params["id"].nil?
 
   begin
     player = Player.find( params["id"] )
@@ -187,15 +187,15 @@ get '/list_games/p/:id' do
       end
       success(games)
     else
-      error "invalid id"
+      respond_error "invalid id"
     end
   rescue Mongoid::Errors::MongoidError => e
-    error e.message
+    respond_error e.message
   end
 end
 
 get '/game_turn/p/:player_id/g/:game_id' do
-  return error( "Don't be leaving empty params..." ) if params["player_id"].nil? or  params["game_id"].nil?
+  return respond_error( "Don't be leaving empty params..." ) if params["player_id"].nil? or  params["game_id"].nil?
 
   player = Player.find( params["player_id"] )
   if player 
@@ -217,15 +217,15 @@ get '/game_turn/p/:player_id/g/:game_id' do
       end
       success(data)
     else
-      error "invalid player id"
+      respond_error "invalid player id"
     end
   else
-    error "invalid player id"
+    respond_error "invalid player id"
   end
 end
 
 post '/game_turn' do
-  return error( "Don't be leaving empty params..." ) if params["player_id"].nil? or  
+  return respond_error( "Don't be leaving empty params..." ) if params["player_id"].nil? or  
   params["game_id"].nil? or 
   params["data"].nil?
   begin
@@ -268,19 +268,19 @@ post '/game_turn' do
 
         success('')
       else
-        error "invalid player id"
+        respond_error "invalid player id"
       end
     else
-      error "invalid player id"
+      respond_error "invalid player id"
     end
   rescue Mongoid::Errors::MongoidError => e
-    error e.message
+    respond_error e.message
   end
 end
 
 #helper
-def error(msg)
-  { value: "error", message: msg }.to_json
+def respond_error(msg)
+  { value: "respond_error", message: msg }.to_json
 end
 
 def success(data)
