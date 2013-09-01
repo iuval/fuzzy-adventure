@@ -93,7 +93,7 @@ post '/sign_in' do
     else  
       player = Player.create!( email: params["email"], password: params["password"] )
       
-      success(id: player._id)
+      respond_success(id: player._id)
     end
   rescue Mongoid::Errors::MongoidError => e
     respond_error e.message
@@ -107,7 +107,7 @@ post '/log_in' do
     players = Player.where(email: params["email"], password: params["password"])
     if players.count > 0
       player = players.first
-      success(id: player.id)
+      respond_success(id: player.id)
     else
       respond_error "invalid email or password"
     end
@@ -137,7 +137,7 @@ post '/enable_random' do
         player.save
       end
 
-      success ""
+      respond_success ""
     else
       respond_error 'invalid id'
     end
@@ -157,7 +157,7 @@ post '/disable_random' do
     else
       respond_error "invalid id"
     end
-    success ""
+    respond_success ""
   rescue Mongoid::Errors::MongoidError => e
     respond_error e.message
   end
@@ -185,7 +185,7 @@ get '/list_games/p/:id' do
           end
         end
       end
-      success(games)
+      respond_success(games)
     else
       respond_error "invalid id"
     end
@@ -215,7 +215,7 @@ get '/game_turn/p/:player_id/g/:game_id' do
       else
         data = { game_id: game.id, player: player_num, data: 'none' }
       end
-      success(data)
+      respond_success(data)
     else
       respond_error "invalid player id"
     end
@@ -266,7 +266,7 @@ post '/game_turn' do
         end
         game.save
 
-        success('')
+        respond_success('')
       else
         respond_error "invalid player id"
       end
@@ -280,9 +280,9 @@ end
 
 #helper
 def respond_error(msg)
-  { value: "respond_error", message: msg }.to_json
+  { value: "error", message: msg }.to_json
 end
 
-def success(data)
+def respond_success(data)
   { value: "ok", data: data }.to_json
 end
