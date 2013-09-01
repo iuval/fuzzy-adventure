@@ -233,13 +233,13 @@ post '/game_turn' do
     if player 
       game = player.games.find( params["game_id"] )
       if game
-        move = game.moves.create!
-        move.player = player
-        move.turn = game.turn
-        move.data = params['data']
-        move.save
-
-        unless params["result"].nil?
+        if params["result"].nil?
+          move = game.moves.create!
+          move.player = player
+          move.turn = game.turn
+          move.data = params['data']
+          move.save
+        else
           if params["result"] == 'victory'
             player.victory_total += 1
             player.save
