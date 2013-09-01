@@ -17,6 +17,7 @@ end
 class Player
   include Mongoid::Document
   field :email, type: String
+  field :password, type: String
   field :name, type: String
   field :random_enable, type: Boolean, default: false
   field :victory_total, type: Integer, default: 0
@@ -84,13 +85,13 @@ get '/delete_all_players' do
 end 
 
 post '/sign_in' do
-  return error( "Don't be leaving empty params..." ) if params["email"].nil?
+  return error( "Don't be leaving empty params..." ) if params["email"].nil? || params["password"].nil?
 
   begin
     if Player.where( email: params["email"] ).count > 0
-      error("email already in use")
+      error "email already in use"
     else  
-      player = Player.create!( email: params["email"], name: params["user"] )
+      player = Player.create!( email: params["email"], password: params["password"] )
       
       success(id: player._id)
     end
@@ -100,12 +101,17 @@ post '/sign_in' do
 end
 
 post '/log_in' do
-  return error( "Don't be leaving empty params..." ) if params["email"].nil?
+  return error( "Don't be leaving empty params..." ) if params["email"].nil? || params["password"].nil?
 
   begin
-    player = find_player(params)
-    if player
-      success(id: player.id)
+    players = Player.where(email: params["email"], password: params["password"])
+    if players.count > 0
+      player = players.first
+      if player
+        success(id: player.id)
+      end
+    else
+      error "invalid email or password"
     end
   rescue Mongoid::Errors::MongoidError => e
     error e.message
@@ -281,14 +287,4 @@ end
 
 def success(data)
   { value: "ok", data: data }.to_json
-end
-
-def find_player(params)
-  players = Player.where(email: params["email"])
-  if players.count > 0
-    players.first
-  else
-    error "invalid email"
-    nil
-  end
 end
