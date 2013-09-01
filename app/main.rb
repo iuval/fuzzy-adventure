@@ -203,10 +203,16 @@ get '/game_turn/p/:player_id/g/:game_id' do
     if game
       if game.players[0] == player
         turn1 = game.moves.where( player: player, turn: game.turn-1 ).first
-        turn2 = game.moves.where( :player.ne => player, turn: game.turn-1 ).first
+        if game.player_2_ended_game
+          turn2 = "ended"
+        else
+          turn2 = game.moves.where( :player.ne => player, turn: game.turn-1 ).first
         player_num = 1
       else
-        turn1 = game.moves.where( :player.ne => player, turn: game.turn-1 ).first
+        if game.player_1_ended_game
+          turn1 = "ended"
+        else
+          turn1 = game.moves.where( :player.ne => player, turn: game.turn-1 ).first
         turn2 = game.moves.where( player: player, turn: game.turn-1 ).first
         player_num = 2
       end
