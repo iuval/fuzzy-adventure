@@ -107,9 +107,7 @@ post '/log_in' do
     players = Player.where(email: params["email"], password: params["password"])
     if players.count > 0
       player = players.first
-      if player
-        success(id: player.id)
-      end
+      success(id: player.id)
     else
       error "invalid email or password"
     end
@@ -282,7 +280,7 @@ end
 
 #helper
 def error(msg)
-  { value: "error", data: { message: msg } }.to_json
+  { value: "error", message: msg }.to_json
 end
 
 def success(data)
