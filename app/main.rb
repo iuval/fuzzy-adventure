@@ -257,10 +257,11 @@ post '/game_turn' do
           end
         end
 
-        if game.moves.where( turn: game.turn ).count == 2
-          if game.player_1_ended_game && game.player_2_ended_game
-            game.ended = true
-          else
+        
+        if game.player_1_ended_game && game.player_2_ended_game
+          game.ended = true
+        else
+          if game.moves.where( turn: game.turn ).count == 2
             game.turn += 1
           end
         end
