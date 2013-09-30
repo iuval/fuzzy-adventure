@@ -20,6 +20,8 @@ GEM
     eventmachine (1.0.3)
     eventmachine (1.0.3-x86-mingw32)
     i18n (0.6.1)
+    kaminari (0.11.0)
+      kaminari
     mongo (1.9.0)
       bson (~> 1.9.0)
     mongoid (3.1.4)
@@ -50,6 +52,7 @@ PLATFORMS
 
 DEPENDENCIES
   debugger
+  kaminari
   mongo
   mongoid
   sinatra
