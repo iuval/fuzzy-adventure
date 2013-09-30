@@ -66,22 +66,29 @@ class Invite
 end
 
 get '/' do
-  @players = Player.all
-  @games = Game.all
+  @players = Player.order_by(:victory_total).page params[:page]
   erb :index
+end
+
+get '/games' do
+  @games = Game.all.page params[:page]
+  erb :games
 end
 
 get '/games/:game_id' do
   @game = Game.find( params["game_id"] )
+  @moves = @game.moves.page params[:page]
   erb :game
 end
 
 get '/delete_all_games' do
   Game.delete_all
+  erb :index
 end 
 
 get '/delete_all_players' do
   Player.delete_all
+  erb :index
 end 
 
 post '/sign_in' do
