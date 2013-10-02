@@ -31,11 +31,11 @@
                 <td><%= move.turn %></td>
                 <td><%= move.player.email %></td>
                 <td><%= move.data %></td>
-              </tr> 
+              </tr>
             <% end %>
           </tbody>
         </table>
-        <%= paginate @moves %>
+        <%= will_paginate @moves %>
       <% else %>
         <p>No moves</p>
       <% end %>

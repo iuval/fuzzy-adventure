@@ -1,6 +1,8 @@
 require 'rubygems'
 require 'sinatra'
 require 'mongoid'
+require 'will_paginate_mongoid'
+include WillPaginate::Sinatra::Helpers
 
 ENV['RACK_ENV'] ||= 'development'
 
@@ -30,6 +32,8 @@ class Player
 
   validates :email, uniqueness: true, length: { maximum: 30 }
   validates :name, length: { maximum: 30 }
+
+  default_scope order_by([:victory_total, :desc])
 end
 
 class Game
@@ -37,9 +41,9 @@ class Game
   field :id
   field :turn, type: Integer, default: 1
   field :move_count_current_turn, type: Integer, default: 0
-  field :ended, type: Boolean, default: false 
-  field :player_1_ended_game, type: Boolean, default: false 
-  field :player_2_ended_game, type: Boolean, default: false 
+  field :ended, type: Boolean, default: false
+  field :player_1_ended_game, type: Boolean, default: false
+  field :player_2_ended_game, type: Boolean, default: false
 
   has_and_belongs_to_many :players
 
@@ -66,30 +70,30 @@ class Invite
 end
 
 get '/' do
-  @players = Player.order_by(:victory_total).page params[:page]
+  @players = Player.paginate(page: params[:page])
   erb :index
 end
 
 get '/games' do
-  @games = Game.all.page params[:page]
+  @games = Game.paginate(page: params[:page])
   erb :games
 end
 
 get '/games/:game_id' do
   @game = Game.find( params["game_id"] )
-  @moves = @game.moves.page params[:page]
+  @moves = @game.moves.paginate(page: params[:page])
   erb :game
 end
 
 get '/delete_all_games' do
   Game.delete_all
   erb :index
-end 
+end
 
 get '/delete_all_players' do
   Player.delete_all
   erb :index
-end 
+end
 
 post '/sign_in' do
   return respond_error( "Don't be leaving empty params..." ) if params["email"].nil? || params["password"].nil?
@@ -97,9 +101,9 @@ post '/sign_in' do
   begin
     if Player.where( email: params["email"] ).count > 0
       respond_error "email already in use"
-    else  
+    else
       player = Player.create!( email: params["email"], password: params["password"] )
-      
+
       respond_success(id: player._id)
     end
   rescue Mongoid::Errors::MongoidError => e
@@ -205,7 +209,7 @@ get '/game_turn/p/:player_id/g/:game_id' do
   return respond_error( "Don't be leaving empty params..." ) if params["player_id"].nil? or  params["game_id"].nil?
 
   player = Player.find( params["player_id"] )
-  if player 
+  if player
     game = player.games.find( params["game_id"] )
     if game
       if game.players[0] == player
@@ -232,12 +236,12 @@ get '/game_turn/p/:player_id/g/:game_id' do
 end
 
 post '/game_turn' do
-  return respond_error( "Don't be leaving empty params..." ) if params["player_id"].nil? or  
-  params["game_id"].nil? or 
+  return respond_error( "Don't be leaving empty params..." ) if params["player_id"].nil? or
+  params["game_id"].nil? or
   params["data"].nil?
   begin
     player = Player.find( params["player_id"] )
-    if player 
+    if player
       game = player.games.find( params["game_id"] )
       if game
         move = game.moves.create!
@@ -264,7 +268,6 @@ post '/game_turn' do
           end
         end
 
-        
         if game.player_1_ended_game && game.player_2_ended_game
           game.ended = true
         else

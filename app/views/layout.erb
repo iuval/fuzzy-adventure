@@ -1,14 +1,22 @@
  <!-- Latest compiled and minified CSS -->
  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/css/bootstrap.min.css">
- 
+
  <!-- Latest compiled and minified JavaScript -->
  <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc1/js/bootstrap.min.js"></script>
 
 
-  <nav class="navbar navbar-default navbar-static-top" role="navigation">
+  <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
     <div class="navbar-header">
       <a class="navbar-brand" href="/">Crystal Clash</a>
     </div>
+    <ul class="nav navbar-nav">
+      <li><a href="/games">Games</a></li>
+    </ul>
   </nav>
-
-<%= yield %>
+  <div class='container'>
+    <div class="row">
+      <div class="col-xs-6">
+        <%= yield %>
+      </div>
+    </div>
+  </div>
