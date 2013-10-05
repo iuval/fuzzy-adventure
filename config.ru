@@ -1,3 +1,3 @@
-require './app/main.rb'
+require "./app/init"
 
-run Sinatra::Application
+run CrystalClash::App.new
