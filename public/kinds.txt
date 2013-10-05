@@ -9,5 +9,5 @@ Demon
 Giant
 Undead
 Zombie
-Saiyan
 Elf
+Pacifist

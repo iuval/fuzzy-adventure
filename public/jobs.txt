@@ -28,3 +28,8 @@ Engineer
 Furniture Tester
 Snake Milker
 Scavenger
+Baker
+Professor
+Spartan
+Pizza Guy
+Cable Guy
