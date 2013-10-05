@@ -3,23 +3,19 @@ module CrystalClash
     module Players
 
       def self.init_adjs(adjs)
-        @@adjs = cap adjs
+        @@adjs = adjs
       end
 
-      def self.init_super_adjs(super_adjs)
-        @@super_adjs = cap super_adjs
+      def self.init_kinds(kinds)
+        @@kinds = kinds
       end
 
-      def self.init_objects(objects)
-        @@objects = cap objects
-      end
-
-      def self.cap(string_list)
-        string_list.map(&:capitalize)
+      def self.init_jobs(jobs)
+        @@jobs = jobs
       end
 
       def self.random_name
-        @@super_adjs.sample + " " + @@adjs.sample + " " + @@objects.sample
+        @@adjs.sample + " " + @@kinds.sample + " " + @@jobs.sample
       end
     end
   end

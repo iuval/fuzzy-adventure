@@ -10,6 +10,10 @@ module CrystalClash
       erb :index
     end
 
+    get '/random_name' do
+      respond_success CrystalClash::Helpers::Players.random_name
+    end
+
     get '/delete_all_games' do
       CrystalClash::Models::Game.delete_all
       erb :index

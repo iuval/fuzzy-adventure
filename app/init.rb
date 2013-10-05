@@ -35,6 +35,6 @@ Dir["./app/routes/*.rb"].sort.each {|file| require file }
 Dir["./app/helpers/*.rb"].sort.each {|file| require file }
 
 CrystalClash::Helpers::Players.init_adjs File.read(File.expand_path('public/adjs.txt', ROOT_DIR)).split("\n")
-CrystalClash::Helpers::Players.init_super_adjs File.read(File.expand_path('public/super_adjs.txt', ROOT_DIR)).split("\n")
-CrystalClash::Helpers::Players.init_objects File.read(File.expand_path('public/objects.txt', ROOT_DIR)).split("\n")
+CrystalClash::Helpers::Players.init_kinds File.read(File.expand_path('public/kinds.txt', ROOT_DIR)).split("\n")
+CrystalClash::Helpers::Players.init_jobs File.read(File.expand_path('public/jobs.txt', ROOT_DIR)).split("\n")
 

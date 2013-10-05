@@ -1,0 +1,30 @@
+Guide
+Merchant
+Nurse
+Arms Dealer
+Witch
+Doctor
+Witch Doctor
+Mechanic
+Painter
+Wizard
+Blacksmith
+Gambler
+Mercenary
+Captain
+Bandit
+President
+Dictator
+Guard
+Warlock
+Hunter
+Farmer
+Sandwich Artist
+Ambassador
+Secretary
+Carpenter
+Molecular Biologist
+Engineer
+Furniture Tester
+Snake Milker
+Scavenger

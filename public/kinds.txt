@@ -1,0 +1,13 @@
+Ghost
+Robot
+Cyborg
+Pirate
+Goblin
+Ninja
+Beast
+Demon
+Giant
+Undead
+Feline
+Canine
+Zombie
