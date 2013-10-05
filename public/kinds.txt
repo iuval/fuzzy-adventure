@@ -8,6 +8,6 @@ Beast
 Demon
 Giant
 Undead
-Feline
-Canine
 Zombie
+Saiyan
+Elf

@@ -63,9 +63,9 @@ module CrystalClash
             player_num = 2
           end
           if turn1 && turn2
-            data = { game_id: game.id, player: player_num, data1: turn1.data, data2: turn2.data }
+            data = { game_id: game.id, turn: game.turn, player: player_num, data1: turn1.data, data2: turn2.data }
           else
-            data = { game_id: game.id, player: player_num, data: 'none' }
+            data = { game_id: game.id, turn: game.turn, player: player_num, data: 'none' }
           end
           respond_success(data)
         else
