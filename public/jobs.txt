@@ -1,4 +1,3 @@
-Guide
 Merchant
 Nurse
 Arms Dealer
@@ -33,3 +32,8 @@ Professor
 Spartan
 Pizza Guy
 Cable Guy
+Banjo Player
+Pianist
+Rock Star
+Pacifist
+Nerd

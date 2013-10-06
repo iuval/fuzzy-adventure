@@ -10,4 +10,3 @@ Giant
 Undead
 Zombie
 Elf
-Pacifist
