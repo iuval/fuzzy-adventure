@@ -46,7 +46,7 @@ module CrystalClash
 
           respond_success({ game_id:   game.id,
                             name:      random_player.name,
-                            victories: random_player.victories,
+                            victories: random_player.victory_total,
                             turn:      '1',
                             state:     'play' })
         else
