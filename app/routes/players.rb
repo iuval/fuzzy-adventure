@@ -43,16 +43,18 @@ module CrystalClash
 
           random_player.random_enable = false
           random_player.save
+
+          respond_success({ game_id:   game.id,
+                            name:      random_player.name,
+                            victories: random_player.victories,
+                            turn:      '1',
+                            state:     'play' })
         else
           player.random_enable = true
           player.save
-        end
 
-        respond_success  { game_id: game.id,
-                           name: random_player.name,
-                           victories: random_player.victories,
-                           turn: 1,
-                           state: 'play' }
+          respond_success ''
+        end
       else
         respond_error 'invalid id'
       end
