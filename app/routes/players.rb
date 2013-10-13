@@ -48,7 +48,11 @@ module CrystalClash
           player.save
         end
 
-        respond_success ""
+        respond_success  { game_id: game.id,
+                           name: random_player.name,
+                           victories: random_player.victories,
+                           turn: 1,
+                           state: 'play' }
       else
         respond_error 'invalid id'
       end
