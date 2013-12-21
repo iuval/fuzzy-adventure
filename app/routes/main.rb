@@ -29,15 +29,21 @@ module CrystalClash
           unless game.ended
             if game.players[0] == player && !game.player_1_ended_game
               name = game.players[1].name
+              emblem = game.players[1].emblem
               victories = game.players[1].victory_total
               state = game.moves.where(player: player, turn: game.turn).count == 0 ? 'play' : 'wait'
-              games << { game_id: game.id, name: name, victories: victories, turn: game.turn, state: state }
             elsif !game.player_2_ended_game
               name = game.players[0].name
+              emblem = game.players[0].emblem
               victories = game.players[0].victory_total
               state = game.moves.where(player: player, turn: game.turn).count == 0 ? 'play' : 'wait'
-              games << { game_id: game.id, name: name, victories: victories,turn: game.turn, state: state }
             end
+            games << { game_id: game.id,
+                       name: name,
+                       victories: victories,
+                       turn: game.turn,
+                       state: state,
+                       emblem: emblem }
           end
         end
         respond_success(games)

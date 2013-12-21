@@ -10,7 +10,12 @@ module CrystalClash
                                                   password: params["password"],
                                                   name: CrystalClash::Helpers::Players.random_name)
         if player.save
-          respond_success({ id: player._id, name: player.name })
+          respond_success({ id: player._id,
+                            name: player.name,
+                            victory_total: player.victory_total,
+                            defeat_total: player.defeat_total,
+                            draw_total: player.draw_total,
+                            emblem: player.emblem })
         else
           respond_error "Woah! Something went wrong, try again later."
         end
@@ -22,7 +27,12 @@ module CrystalClash
 
       player = CrystalClash::Models::Player.where(email: params["email"], password: params["password"]).first
       if player
-        respond_success({ id: player._id, name: player.name })
+        respond_success({ id: player._id,
+                          name: player.name,
+                          victory_total: player.victory_total,
+                          defeat_total: player.defeat_total,
+                          draw_total: player.draw_total,
+                            emblem: player.emblem })
       else
         respond_error "invalid email or password"
       end

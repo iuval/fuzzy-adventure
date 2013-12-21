@@ -9,6 +9,7 @@ module CrystalClash
       field :victory_total, type: Integer, default: 0
       field :defeat_total, type: Integer, default: 0
       field :draw_total, type: Integer, default: 0
+      field :emblem, type: Integer, default: 0
 
       has_and_belongs_to_many :games
       has_one :invites, class_name: 'CrystalClash::Models::Invite', inverse_of: :host
