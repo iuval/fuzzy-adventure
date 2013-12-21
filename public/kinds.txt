@@ -10,3 +10,23 @@ Giant
 Undead
 Zombie
 Elf
+Dark Elf
+Amphibian
+Mermaid
+Sasquatch
+Mammal
+Snowman
+Rodent
+Dragon
+Vampire
+Phoenix
+Dwarf
+Genie
+Leprechaun
+Angel
+Fairy
+Werewolf
+Troll
+Gnome
+Cyclop
+Unicorn
