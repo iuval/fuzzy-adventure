@@ -155,7 +155,7 @@ module CrystalClash
           end
           game.save
 
-          respond_success('')
+          respond_success { victory_total: player.victory_total, defeat_total: player.defeat_total }
         else
           respond_error "invalid player id"
         end
