@@ -32,7 +32,7 @@ module CrystalClash
                           victory_total: player.victory_total,
                           defeat_total: player.defeat_total,
                           draw_total: player.draw_total,
-                            emblem: player.emblem })
+                          emblem: player.emblem })
       else
         respond_error "invalid email or password"
       end
