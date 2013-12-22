@@ -8,6 +8,8 @@ module CrystalClash
       field :ended, type: Boolean, default: false
       field :player_1_ended_game, type: Boolean, default: false
       field :player_2_ended_game, type: Boolean, default: false
+      field :player_1_surrender, type: Boolean, default: false
+      field :player_2_surrender, type: Boolean, default: false
 
       has_and_belongs_to_many :players
 
