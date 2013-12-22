@@ -58,7 +58,9 @@ module CrystalClash
                             name:      random_player.name,
                             victories: random_player.victory_total,
                             turn:      '1',
-                            state:     'play' })
+                            state:     'play',
+                            emblem:    random_player.emblem,
+                            surrender: false })
         else
           player.random_enable = true
           player.save
