@@ -132,43 +132,22 @@ module CrystalClash
         game = player.games.where(id: params["game_id"]).first
         if game
           if game.players[0] == player
-            game.player_1_ended_game = true;
-            game.player_1_surrender = true;
+            game.player_1_ended_game = true
+            if game.player_2_surrender
+              player.victory_total += 1
+            else
+              game.player_1_surrender = true
+              player.defeat_total += 1
+            end
           else
-            game.player_2_ended_game = true;
-            game.player_2_surrender = true;
+            game.player_2_ended_game = true
+            if game.player_1_surrender
+              player.victory_total += 1
+            else
+              game.player_2_surrender = true
+              player.defeat_total += 1
+            end
           end
-          player.defeat_total += 1
-          player.save
-
-          if game.player_1_ended_game && game.player_2_ended_game
-            game.ended = true
-          end
-          game.save
-
-          respond_success('')
-        else
-          respond_error "invalid player id"
-        end
-      else
-        respond_error "invalid player id"
-      end
-    end
-
-    post '/ack_surrender' do
-      return respond_error("Don't be leaving empty params...") if params["player_id"].nil? or
-        params["game_id"].nil?
-
-      player = CrystalClash::Models::Player.where(id: params["player_id"]).first
-      if player
-        game = player.games.where(id: params["game_id"]).first
-        if game
-          if game.players[0] == player
-            game.player_1_ended_game = true;
-          else
-            game.player_2_ended_game = true;
-          end
-          player.victory_total += 1
           player.save
 
           if game.player_1_ended_game && game.player_2_ended_game
