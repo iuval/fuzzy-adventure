@@ -77,9 +77,25 @@ module CrystalClash
       if player
         player.random_enable = false
         player.save
-        return respond_success ""
+        return respond_success ''
       else
         return respond_error "invalid id"
+      end
+    end
+
+    post '/update_player' do
+      return respond_error("Don't be leaving empty params...") if params["id"].nil?
+
+      player = CrystalClash::Models::Player.where(id: params["id"]).first
+      if player
+        player.name = params[:name] unless params[:name].nil?   
+        player.email = params[:email] unless params[:email].nil?   
+        player.emblem = params[:emblem] unless params[:emblem].nil?   
+        player.save
+
+        respond_success ''
+      else
+        respond_error 'invalid id'
       end
     end
   end
