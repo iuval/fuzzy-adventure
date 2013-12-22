@@ -125,7 +125,7 @@ module CrystalClash
 
     post '/surrender' do
       return respond_error("Don't be leaving empty params...") if params["player_id"].nil? or
-        params["game_id"].nil? or params["result"].nil?
+        params["game_id"].nil?
 
       player = CrystalClash::Models::Player.where(id: params["player_id"]).first
       if player
@@ -157,7 +157,7 @@ module CrystalClash
 
     post '/ack_surrender' do
       return respond_error("Don't be leaving empty params...") if params["player_id"].nil? or
-        params["game_id"].nil? or params["result"].nil?
+        params["game_id"].nil?
 
       player = CrystalClash::Models::Player.where(id: params["player_id"]).first
       if player
