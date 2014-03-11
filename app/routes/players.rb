@@ -1,17 +1,16 @@
 module CrystalClash
   class App
     post '/sign_in' do
-      return respond_error("Don't be leaving empty params...") if params["email"].nil? || params["password"].nil?
-
+      return respond_error("Don't be leaving empty params...") if params["email"].nil? || params["password"].nil? || params["name"].nil?
+      params["name"] ||= CrystalClash::Helpers::Players.random_name
       if CrystalClash::Models::Player.where(email: params["email"]).count > 0
         respond_error 'email already in use'
       else
         player = CrystalClash::Models::Player.new(email: params["email"],
                                                   password: params["password"],
-                                                  name: CrystalClash::Helpers::Players.random_name)
+                                                  name: params["name"])
         if player.save
           respond_success({ id: player._id,
-                            name: player.name,
                             victory_total: player.victory_total,
                             defeat_total: player.defeat_total,
                             draw_total: player.draw_total,
@@ -91,7 +90,8 @@ module CrystalClash
       player = CrystalClash::Models::Player.where(id: params["id"]).first
       if player
         player.name = params[:name] unless params[:name].nil?   
-        player.email = params[:email] unless params[:email].nil?   
+        player.email = params[:email] unless params[:email].nil?
+        player.email = params[:password] unless params[:password].nil?
         player.emblem = params[:emblem] unless params[:emblem].nil?   
         player.save
 
